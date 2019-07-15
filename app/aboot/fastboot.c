@@ -38,6 +38,7 @@
 #include <kernel/thread.h>
 #include <kernel/event.h>
 #include <dev/udc.h>
+#include <pm8x41_regulator.h>
 #include "fastboot.h"
 
 #ifdef USB30_SUPPORT
@@ -520,6 +521,19 @@ void cmd_oem_lk_log(const char *arg, void *data, unsigned sz)
 }
 #endif
 
+static void cmd_oem_dump_regulators(const char *arg, void *data, unsigned sz)
+{
+	char response[MAX_RSP_SIZE];
+	struct spmi_regulator *vreg;
+	for (vreg = target_get_regulators(); vreg->name; ++vreg) {
+		snprintf(response, sizeof(response), "%s: enabled: %d, voltage: %d mV",
+			 vreg->name, regulator_is_enabled(vreg),
+			 regulator_get_voltage(vreg));
+		fastboot_info(response);
+	}
+	fastboot_okay("");
+}
+
 static void cmd_oem_dump_smd_rpm(const char *arg, void *data, unsigned sz)
 {
 	smd_channel_alloc_entry_t *entries;
@@ -782,6 +796,7 @@ int fastboot_init(void *base, unsigned size)
 		goto fail_udc_register;
 
 	fastboot_register("oem help", cmd_help);
+	fastboot_register("oem dump-regulators", cmd_oem_dump_regulators);
 	fastboot_register("oem dump-smd-rpm", cmd_oem_dump_smd_rpm);
 	#if WITH_DEBUG_LOG_BUF
 	fastboot_register("oem lk_log", cmd_oem_lk_log);
