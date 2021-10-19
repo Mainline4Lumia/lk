@@ -184,6 +184,7 @@ DEFINES += DISPLAY_TYPE_MDSS=1
 			$(LOCAL_DIR)/dev_tree.o \
 			$(LOCAL_DIR)/gpio.o \
 			$(LOCAL_DIR)/dload_util.o \
+			$(LOCAL_DIR)/mdss_efifb.o \
 			$(LOCAL_DIR)/shutdown_detect.o
 endif
 
