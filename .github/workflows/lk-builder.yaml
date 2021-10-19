@@ -1,0 +1,33 @@
+name: Build LittleKernel for all supported lumias
+on: [push]
+jobs:
+  Build-LittleKernel-All:
+    runs-on: ubuntu-20.04
+    steps:
+      - run: sudo apt install make gcc-arm-none-eabi
+      - name: Check out LumiaLK
+        uses: actions/checkout@v2
+      - run: make -j$(nproc) msm8226_tesla
+      - run: mv build-msm8226_tesla/emmc_appsboot.mbn build-msm8226_tesla/emmc_appsboot.mbn.notelf
+      - run: mv build-msm8226_tesla/lk_s.elf build-msm8226_tesla/emmc_appsboot.mbn
+      - name: Upload msm8226_tesla elf emmc_appsboot.mbn
+        uses: actions/upload-artifact@v2
+        with:
+          name: tesla-emmc_apppsboot.mbn
+          path: build-msm8226_tesla/emmc_appsboot.mbn
+      - run: make -j$(nproc) msm8226_moneypenny
+      - run: mv build-msm8226_moneypenny/emmc_appsboot.mbn build-msm8226_moneypenny/emmc_appsboot.mbn.notelf
+      - run: mv build-msm8226_moneypenny/lk_s.elf build-msm8226_moneypenny/emmc_appsboot.mbn
+      - name: Upload msm8226_moneypenny elf emmc_appsboot.mbn
+        uses: actions/upload-artifact@v2
+        with:
+          name: moneypenny-emmc_apppsboot.mbn
+          path: build-msm8226_moneypenny/emmc_appsboot.mbn
+      - run: make -j$(nproc) msm8226_dempsey
+      - run: mv build-msm8226_dempsey/emmc_appsboot.mbn build-msm8226_dempsey/emmc_appsboot.mbn.notelf
+      - run: mv build-msm8226_dempsey/lk_s.elf build-msm8226_dempsey/emmc_appsboot.mbn
+      - name: Upload msm8226_dempsey elf emmc_appsboot.mbn
+        uses: actions/upload-artifact@v2
+        with:
+          name: dempsey-emmc_apppsboot.mbn
+          path: build-msm8226_dempsey/emmc_appsboot.mbn
