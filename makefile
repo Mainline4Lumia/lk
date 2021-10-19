@@ -65,7 +65,7 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 endif
 
 # setup toolchain prefix
-TOOLCHAIN_PREFIX ?= arm-eabi-
+TOOLCHAIN_PREFIX ?= arm-none-eabi-
 CFLAGS += -fstack-protector-all
 CFLAGS += -fno-strict-overflow
 CPPFLAGS := -fno-exceptions -fno-rtti -fno-threadsafe-statics
