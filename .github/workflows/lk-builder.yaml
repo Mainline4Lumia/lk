@@ -31,3 +31,11 @@ jobs:
         with:
           name: dempsey-emmc_apppsboot.mbn
           path: build-msm8226_dempsey/emmc_appsboot.mbn
+      - run: make -j$(nproc) msm8610_vela
+      - run: mv build-msm8610_vela/emmc_appsboot.mbn build-msm8610_vela/emmc_appsboot.mbn.notelf
+      - run: mv build-msm8610_vela/lk_s.elf build-msm8610_vela/emmc_appsboot.mbn
+      - name: Upload msm8610_vela elf emmc_appsboot.mbn
+        uses: actions/upload-artifact@v2
+        with:
+          name: vela-emmc_apppsboot.mbn
+          path: build-msm8610_vela/emmc_appsboot.mbn
